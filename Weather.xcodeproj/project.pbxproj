@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		413A782E2BAF001700468BA2 /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A782D2BAF001700468BA2 /* CurrentWeatherCell.swift */; };
+		413A78302BAF030B00468BA2 /* ShortWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A782F2BAF030B00468BA2 /* ShortWeatherCell.swift */; };
 		41AAD2E62BAB61B300A1D2E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAD2E52BAB61B300A1D2E1 /* AppDelegate.swift */; };
 		41AAD2EA2BAB61B300A1D2E1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAD2E92BAB61B300A1D2E1 /* ViewController.swift */; };
 		41AAD2EF2BAB61B700A1D2E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41AAD2EE2BAB61B700A1D2E1 /* Assets.xcassets */; };
@@ -14,6 +16,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		413A782D2BAF001700468BA2 /* CurrentWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCell.swift; sourceTree = "<group>"; };
+		413A782F2BAF030B00468BA2 /* ShortWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortWeatherCell.swift; sourceTree = "<group>"; };
 		41AAD2E22BAB61B300A1D2E1 /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41AAD2E52BAB61B300A1D2E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41AAD2E92BAB61B300A1D2E1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -57,6 +61,8 @@
 				41AAD2EE2BAB61B700A1D2E1 /* Assets.xcassets */,
 				41AAD2F02BAB61B700A1D2E1 /* LaunchScreen.storyboard */,
 				41AAD2F32BAB61B700A1D2E1 /* Info.plist */,
+				413A782D2BAF001700468BA2 /* CurrentWeatherCell.swift */,
+				413A782F2BAF030B00468BA2 /* ShortWeatherCell.swift */,
 			);
 			path = Weather;
 			sourceTree = "<group>";
@@ -133,6 +139,8 @@
 			files = (
 				41AAD2EA2BAB61B300A1D2E1 /* ViewController.swift in Sources */,
 				41AAD2E62BAB61B300A1D2E1 /* AppDelegate.swift in Sources */,
+				413A782E2BAF001700468BA2 /* CurrentWeatherCell.swift in Sources */,
+				413A78302BAF030B00468BA2 /* ShortWeatherCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
