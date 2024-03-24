@@ -11,7 +11,6 @@ struct CurrentWeatherModel: Codable {
     let currentTemp: String?
     let iconWeather: String?
     let descriptionWeather: String?
-    let locate: String?
     let feelsLikeTemp: String?
     let windSpeedLabel: String?
 }

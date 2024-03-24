@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ViewController: UIViewController {
     var profileImageListViewObserver: NSObjectProtocol?
+    let locationManager = CLLocationManager()
 
     private var dataSource: UICollectionViewDiffableDataSource<Int, Int>!
     private let collectionView: UICollectionView = {
@@ -65,6 +67,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(backgroundImageView)
+
         configureCollectionView()
         configureDataSource()
         WeatherInfoService().fetchWeatherInfo()
@@ -77,6 +80,8 @@ class ViewController: UIViewController {
             backgroundImageView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
 
+        locationManager.delegate = self
+        checkLocationAuthorization()
     }
 
     private func configureCollectionView() {
@@ -97,39 +102,53 @@ class ViewController: UIViewController {
     private func configureDataSource() {
         dataSource = UICollectionViewDiffableDataSource<Int, Int>(
             collectionView: collectionView) {(collectionView, indexPath, _) -> UICollectionViewCell? in
-            if indexPath.section == 0 {
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: CurrentWeatherCell.reuseIdent, for: indexPath
-                ) as? CurrentWeatherCell else {
-                    fatalError("Unable to dequeue CurrentWeatherCell")
-                }
+                if indexPath.section == 0 {
+                    guard let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: CurrentWeatherCell.reuseIdent, for: indexPath
+                    ) as? CurrentWeatherCell else {
+                        fatalError("Unable to dequeue CurrentWeatherCell")
+                    }
 
-                if let currentWeather = WeatherStorage.cached.saveCurrentWeatherToUserDefaults {
-                    cell.configure(with: currentWeather)
-                }
+                    if let currentWeather = WeatherStorage.cached.saveCurrentWeatherToUserDefaults {
+                        cell.configure(with: currentWeather)
+                    }
+                    cell.delegate = self
+                    return cell
+                } else {
+                    guard let cell = collectionView.dequeueReusableCell(
+                        withReuseIdentifier: ShortWeatherCell.reuseIdent,
+                        for: indexPath) as? ShortWeatherCell else {
+                        fatalError("Unable to dequeue ShortWeatherCell")
+                    }
 
-                return cell
-            } else {
-                guard let cell = collectionView.dequeueReusableCell(
-                    withReuseIdentifier: ShortWeatherCell.reuseIdent,
-                    for: indexPath) as? ShortWeatherCell else {
-                    fatalError("Unable to dequeue ShortWeatherCell")
+                    if let shortWeather = WeatherStorage.cached.saveShortWeatherToUserDefaults,
+                       WeatherStorage.cached.saveShortWeatherToUserDefaults?.count != 0 {
+                        let weather = shortWeather[indexPath.row]
+                        cell.configure(with: weather)
+                    }
+                    return cell
                 }
-
-                if let shortWeather = WeatherStorage.cached.saveShortWeatherToUserDefaults,
-                   WeatherStorage.cached.saveShortWeatherToUserDefaults?.count != 0 {
-                    let weather = shortWeather[indexPath.row]
-                    cell.configure(with: weather)
-                }
-                return cell
             }
-        }
 
         var snapshot = NSDiffableDataSourceSnapshot<Int, Int>()
         snapshot.appendSections([0, 1])
         snapshot.appendItems([0], toSection: 0)
         snapshot.appendItems(Array(1...7), toSection: 1)
         dataSource.apply(snapshot, animatingDifferences: true)
+    }
+
+    func checkLocationAuthorization() {
+
+        switch CLLocationManager.authorizationStatus() {
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .authorizedWhenInUse, .authorizedAlways:
+            locationManager.startUpdatingLocation()
+        case .denied, .restricted:
+            print("Access to location services is denied or restricted.")
+        @unknown default:
+            break
+        }
     }
 
     func observeDataChanges() {
@@ -163,5 +182,168 @@ class ViewController: UIViewController {
                 self.dataSource.apply(snapshot, animatingDifferences: true)
             }
     }
+}
 
+// MARK: - CLLocationManagerDelegate
+
+//extension ViewController: CLLocationManagerDelegate {
+//
+//    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+//
+//            checkLocationAuthorization()
+//        }
+//
+//        func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+//
+//            guard let location = locations.last else { return }
+//
+//            saveLocationToUserDefaults(location: location)
+//
+//            locationManager.stopUpdatingLocation()
+//        }
+//
+//        func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+//            print("Failed to get location: \(error.localizedDescription)")
+//        }
+//
+//        func saveLocationToUserDefaults(location: CLLocation) {
+//            WeatherStorage.cached.userLatitude = location.coordinate.latitude
+//            WeatherStorage.cached.userLongitude = location.coordinate.longitude
+//            print("Location saved to UserDefaults.")
+//        }
+//}
+
+extension ViewController: CurrentWeatherCellDelegate {
+
+    func didTapSearchButton(in cell: CurrentWeatherCell) {
+
+        let alertController = UIAlertController(title: "Введите город", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = "Город"
+        }
+
+        let searchAction = UIAlertAction(title: "Поиск", style: .default) { [weak self] _ in
+            guard let city = alertController.textFields?.first?.text, !city.isEmpty else {
+                return
+            }
+            self?.performCitySearch(for: city)
+        }
+        alertController.addAction(searchAction)
+
+        let cancelAction = UIAlertAction(title: "Отмена", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+
+        self.present(alertController, animated: true, completion: nil)
+    }
+
+//    func didTapLocationButton(in cell: CurrentWeatherCell) {
+//            if CLLocationManager.authorizationStatus() == .authorizedWhenInUse ||
+//                CLLocationManager.authorizationStatus() == .authorizedAlways {
+//                locationManager.requestLocation()
+//            } else {
+//                locationManager.requestWhenInUseAuthorization()
+//        }
+//    }
+
+    func showCityNotFoundError() {
+        let alertController = UIAlertController(title: nil, message: "Город не найден", preferredStyle: .alert)
+        present(alertController, animated: true, completion: nil)
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            alertController.dismiss(animated: true, completion: nil)
+        }
+    }
+
+}
+
+//extension ViewController {
+//    func performCitySearch(for city: String) {
+//        LocationService().coordinatesFromCity(city: city) { coordinates in
+//             if let coordinates = coordinates {
+//                 WeatherStorage.cached.userLatitude = coordinates.latitude
+//                 WeatherStorage.cached.userLongitude = coordinates.longitude
+//                 WeatherInfoService().fetchWeatherInfo()
+//                 print("Координаты города \(city): \(coordinates.latitude), \(coordinates.longitude)")
+//             } else {
+//                 self.showCityNotFoundError()
+//                 print("Не удалось найти координаты для города \(city)")
+//             }
+//         }
+//    }
+//
+//    func showCityNotFoundError() {
+//            let alertController = UIAlertController(title: nil, message: "Город не найден", preferredStyle: .alert)
+//            present(alertController, animated: true, completion: nil)
+//
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                alertController.dismiss(animated: true, completion: nil)
+//            }
+//        }
+//}
+
+extension ViewController: CLLocationManagerDelegate {
+
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        checkLocationAuthorization()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+
+        saveLocationToUserDefaults(location: location)
+
+        locationManager.stopUpdatingLocation()
+
+        // Обновляем ячейки после получения новых координат
+        updateCells()
+    }
+
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        print("Failed to get location: \(error.localizedDescription)")
+    }
+
+    func saveLocationToUserDefaults(location: CLLocation) {
+        WeatherStorage.cached.userLatitude = location.coordinate.latitude
+        WeatherStorage.cached.userLongitude = location.coordinate.longitude
+        print("Location saved to UserDefaults.")
+    }
+
+    func updateCells() {
+        if WeatherStorage.cached.userLatitude != nil && WeatherStorage.cached.userLongitude != nil {
+            // Если координаты есть, обновляем ячейки
+            fetchWeatherAndUpdateCells()
+        } else {
+            // Если координат нет, показываем заглушку
+            showPlaceholder()
+        }
+    }
+
+    func fetchWeatherAndUpdateCells() {
+        WeatherInfoService().fetchWeatherInfo()
+    }
+
+    func showPlaceholder() {
+        // Показываем заглушку
+        print("Показываем заглушку")
+        // Например, можно добавить UIView с текстом "Предоставьте геолокацию"
+    }
+}
+
+extension ViewController {
+    func performCitySearch(for city: String) {
+        LocationService().coordinatesFromCity(city: city) { coordinates in
+             if let coordinates = coordinates {
+                 WeatherStorage.cached.userLatitude = coordinates.latitude
+                 WeatherStorage.cached.userLongitude = coordinates.longitude
+
+                 // Обновляем ячейки после получения координат города
+                 self.fetchWeatherAndUpdateCells()
+
+                 print("Координаты города \(city): \(coordinates.latitude), \(coordinates.longitude)")
+             } else {
+                 self.showCityNotFoundError()
+                 print("Не удалось найти координаты для города \(city)")
+             }
+         }
+    }
 }

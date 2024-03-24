@@ -8,6 +8,7 @@
 import Foundation
 
 enum WeatherCodeModel: Int {
+
     case clearSky = 0
     case mainlyClear = 1
     case partlyCloudy = 2
@@ -38,6 +39,7 @@ enum WeatherCodeModel: Int {
     case unknown = -1
 
     var description: String {
+
         switch self {
         case .clearSky:
             return "Ясное небо"
@@ -99,93 +101,44 @@ enum WeatherCodeModel: Int {
     }
 }
 
-//extension WeatherCodeModel {
-//    func imageName(isDay: Bool) -> String {
-//         let timeOfDay = isDay ? "day" : "night"
-//         switch self {
-//             case .clearSky:
-//                 return "\(timeOfDay)/sunny"
-//             case .mainlyClear:
-//                 return "\(timeOfDay)/mainly_clear"
-//             case .partlyCloudy:
-//                 return "\(timeOfDay)/partly_cloudy"
-//             case .overcast:
-//                 return "overcast"
-//             case .fog:
-//                 return "fog"
-//             case .freezingDrizzleLight:
-//                 return "\(timeOfDay)/light_freezing_drizzle"
-//             case .freezingDrizzleModerate:
-//                 return "\(timeOfDay)/moderate_freezing_drizzle"
-//             case .freezingDrizzleDense:
-//                 return "\(timeOfDay)/dense_freezing_drizzle"
-//             case .drizzleLight:
-//                 return "\(timeOfDay)/light_drizzle"
-//             case .drizzleModerate:
-//                 return "\(timeOfDay)/moderate_drizzle"
-//             case .drizzleHeavy:
-//                 return "\(timeOfDay)/heavy_drizzle"
-//             case .freezingRainLight:
-//                 return "\(timeOfDay)/light_freezing_rain"
-//             case .freezingRainHeavy:
-//                 return "\(timeOfDay)/heavy_freezing_rain"
-//             case .rainSlight:
-//                 return "\(timeOfDay)/light_rain"
-//             case .rainModerate:
-//                 return "\(timeOfDay)/moderate_rain"
-//             case .rainHeavy:
-//                 return "\(timeOfDay)/heavy_rain"
-//             case .snowFallSlight:
-//                 return "\(timeOfDay)/light_snow"
-//             case .snowGrains:
-//                 return "snow_grains"
-//             case .rainShowersSlight:
-//                 return "\(timeOfDay)/light_rain_shower"
-//             case .rainShowersModerate:
-//                 return "\(timeOfDay)/moderate_rain_shower"
-//             case .rainShowersViolent:
-//                 return "\(timeOfDay)/violent_rain_shower"
-//             case .snowShowersSlight:
-//                 return "\(timeOfDay)/light_snow_shower"
-//             case .snowShowersHeavy:
-//                 return "\(timeOfDay)/heavy_snow_shower"
-//             case .thunderstormSlight:
-//                 return "\(timeOfDay)/light_thunderstorm"
-//             case .thunderstormModerate:
-//                 return "\(timeOfDay)/moderate_thunderstorm"
-//             case .thunderstormWithHail:
-//                 return "\(timeOfDay)/thunderstorm_with_hail"
-//             case .unknown:
-//                 return "unknown"
-//         }
-//     }
-//}
-//
-//case clearSky = 0
-//case mainlyClear = 1
-//case partlyCloudy = 2
-//case overcast = 3
-//case fog = 45
-//case drizzleLight = 51
-//case drizzleModerate = 53
-//case drizzleDense = 55
-//case freezingDrizzleLight = 56
-//case freezingDrizzleDense = 57
-//case rainSlight = 61
-//case rainModerate = 63
-//case rainHeavy = 65
-//case freezingRainLight = 66
-//case freezingRainHeavy = 67
-//case snowFallSlight = 71
-//case snowFallModerate = 73
-//case snowFallHeavy = 75
-//case snowGrains = 77
-//case rainShowersSlight = 80
-//case rainShowersModerate = 81
-//case rainShowersViolent = 82
-//case snowShowersSlight = 85
-//case snowShowersHeavy = 86
-//case thunderstormSlight = 95
-//case thunderstormModerate = 96
-//case thunderstormHail = 99
-//case unknown = -1
+extension WeatherCodeModel {
+
+    func imageName() -> String {
+        switch self {
+        case .clearSky, .mainlyClear:
+            return "clear_sun"
+        case .partlyCloudy, .overcast:
+            return "cloud"
+        case .fog:
+            return "fog"
+        case .drizzleLight, .rainSlight:
+            return "drizzle_light"
+        case .drizzleModerate, .rainModerate:
+            return "drizzle_moderate"
+        case .drizzleDense, .rainHeavy:
+            return "drizzle_heavy"
+        case .freezingDrizzleLight, .freezingRainLight:
+            return "snow_drizzle_light"
+        case .freezingDrizzleDense, .freezingRainHeavy:
+            return "snow_drizzle_heavy"
+        case .snowFallSlight, .snowShowersSlight:
+            return "snow_lite"
+        case .snowFallModerate:
+            return "snow_moderate"
+        case .snowFallHeavy, .snowShowersHeavy:
+            return "snow_heavy"
+        case .snowGrains:
+            return "snow_grains"
+        case .rainShowersSlight, .rainShowersViolent:
+            return "rain"
+        case .rainShowersModerate:
+            return "rain_moderate"
+        case .thunderstormSlight, .thunderstormModerate:
+            return "lightning"
+        case .thunderstormHail:
+            return "thunderstorm"
+        case .unknown:
+            return "na"
+        }
+    }
+}

@@ -23,8 +23,8 @@ final class WeatherInfoService: WeatherInfoServiceProtocol {
     // MARK: - Private Properties
 
     private let baseURL = "https://api.open-meteo.com/v1/forecast"
-    private let latitude = 52.52
-    private let longitude = 13.41
+    private let latitude = WeatherStorage.cached.userLatitude
+    private let longitude = WeatherStorage.cached.userLongitude
     private let currentFields = [
         "temperature_2m",
         "apparent_temperature",
@@ -57,6 +57,9 @@ final class WeatherInfoService: WeatherInfoServiceProtocol {
             //            }
             return
         }
+
+        guard  let latitude = latitude,
+               let longitude = longitude else { return }
 
         let queryItems = [
             URLQueryItem(name: "latitude", value: String(latitude)),
@@ -130,13 +133,14 @@ final class WeatherInfoService: WeatherInfoServiceProtocol {
         }
 
         let weatherCode = weatherInfo.current.weatherCode ?? -1
-        let descriptionWeather = WeatherCodeModel(rawValue: weatherCode)?.description
+        let weatherCodeModel = WeatherCodeModel(rawValue: weatherCode)
+        let descriptionWeather = weatherCodeModel?.description
+        let iconWeather = weatherCodeModel?.imageName()
 
         WeatherStorage.cached.saveCurrentWeatherToUserDefaults = CurrentWeatherModel(
             currentTemp: currentTemp,
-            iconWeather: "01_sun_line",
+            iconWeather: iconWeather,
             descriptionWeather: descriptionWeather,
-            locate: "Москва",
             feelsLikeTemp: feelsLikeTemp,
             windSpeedLabel: "\(weatherInfo.current.windSpeed10m ?? 0) km/h"
         )
@@ -158,6 +162,10 @@ final class WeatherInfoService: WeatherInfoServiceProtocol {
         }
 
         for index in 0..<time.count {
+            let weatherCode = weatherInfo.daily.weatherCode?[index] ?? -1
+            let weatherCodeModel = WeatherCodeModel(rawValue: weatherCode)
+            let iconWeather = weatherCodeModel?.imageName()
+
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd"
             if let date = dateFormatter.date(from: time[index]) {
@@ -165,7 +173,7 @@ final class WeatherInfoService: WeatherInfoServiceProtocol {
                 dateFormatter.dateFormat = "EEEE"
                 let dayOfWeek = dateFormatter.string(from: date).capitalized
 
-                let iconWeather = "01_sun_line"
+                let iconWeather = iconWeather
                 let minTemp = Int(minTemps[index].rounded()).description
                 let maxTemp = Int(maxTemps[index].rounded()).description
                 let shortWeatherModel = ShortWeatherModel(

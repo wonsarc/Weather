@@ -10,6 +10,8 @@ import Foundation
 private enum Keys: String {
     case cachedShortWeather
     case cachedCurrentWeather
+    case latitude
+    case longitude
 }
 
 final class WeatherStorage {
@@ -67,6 +69,24 @@ final class WeatherStorage {
             } catch {
                 print("Failed to encode weather data:", error)
             }
+        }
+    }
+
+    var userLatitude: Double? {
+        get {
+            return UserDefaults.standard.double(forKey: Keys.latitude.rawValue)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Keys.latitude.rawValue)
+        }
+    }
+
+    var userLongitude: Double? {
+        get {
+            return UserDefaults.standard.double(forKey: Keys.longitude.rawValue)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: Keys.longitude.rawValue)
         }
     }
 

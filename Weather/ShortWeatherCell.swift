@@ -31,6 +31,7 @@ final class ShortWeatherCell: UICollectionViewCell {
         let minTemp = UILabel()
         minTemp.translatesAutoresizingMaskIntoConstraints = false
         minTemp.textColor = .white
+        minTemp.alpha = 0.5
         minTemp.textAlignment = .center
         minTemp.font = UIFont.boldSystemFont(ofSize: 24)
         return minTemp
@@ -76,7 +77,7 @@ final class ShortWeatherCell: UICollectionViewCell {
             weatherImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             weatherImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
-            maxTemperatureLabel.trailingAnchor.constraint(equalTo: minTemperatureLabel.leadingAnchor, constant: -15),
+            maxTemperatureLabel.leadingAnchor.constraint(equalTo: weatherImageView.trailingAnchor, constant: 25),
             maxTemperatureLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             minTemperatureLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
