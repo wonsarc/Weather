@@ -9,6 +9,13 @@
 /* Begin PBXBuildFile section */
 		413A782E2BAF001700468BA2 /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A782D2BAF001700468BA2 /* CurrentWeatherCell.swift */; };
 		413A78302BAF030B00468BA2 /* ShortWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A782F2BAF030B00468BA2 /* ShortWeatherCell.swift */; };
+		413A78332BAF7F9B00468BA2 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A78322BAF7F9B00468BA2 /* NetworkClient.swift */; };
+		413A78382BAF81C200468BA2 /* WeatherInfoService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A78372BAF81C200468BA2 /* WeatherInfoService.swift */; };
+		413A783C2BAF82A800468BA2 /* CurrentWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A783B2BAF82A800468BA2 /* CurrentWeatherModel.swift */; };
+		413A783E2BAF82B800468BA2 /* ShortWeatherModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A783D2BAF82B800468BA2 /* ShortWeatherModel.swift */; };
+		413A78402BAF83E900468BA2 /* WeatherResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A783F2BAF83E900468BA2 /* WeatherResult.swift */; };
+		413A78422BB0064200468BA2 /* WeatherStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A78412BB0064200468BA2 /* WeatherStorage.swift */; };
+		413A78442BB01FA800468BA2 /* WeatherCodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 413A78432BB01FA800468BA2 /* WeatherCodeModel.swift */; };
 		41AAD2E62BAB61B300A1D2E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAD2E52BAB61B300A1D2E1 /* AppDelegate.swift */; };
 		41AAD2EA2BAB61B300A1D2E1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41AAD2E92BAB61B300A1D2E1 /* ViewController.swift */; };
 		41AAD2EF2BAB61B700A1D2E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 41AAD2EE2BAB61B700A1D2E1 /* Assets.xcassets */; };
@@ -18,6 +25,13 @@
 /* Begin PBXFileReference section */
 		413A782D2BAF001700468BA2 /* CurrentWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCell.swift; sourceTree = "<group>"; };
 		413A782F2BAF030B00468BA2 /* ShortWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortWeatherCell.swift; sourceTree = "<group>"; };
+		413A78322BAF7F9B00468BA2 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		413A78372BAF81C200468BA2 /* WeatherInfoService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherInfoService.swift; sourceTree = "<group>"; };
+		413A783B2BAF82A800468BA2 /* CurrentWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherModel.swift; sourceTree = "<group>"; };
+		413A783D2BAF82B800468BA2 /* ShortWeatherModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortWeatherModel.swift; sourceTree = "<group>"; };
+		413A783F2BAF83E900468BA2 /* WeatherResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResult.swift; sourceTree = "<group>"; };
+		413A78412BB0064200468BA2 /* WeatherStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherStorage.swift; sourceTree = "<group>"; };
+		413A78432BB01FA800468BA2 /* WeatherCodeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherCodeModel.swift; sourceTree = "<group>"; };
 		41AAD2E22BAB61B300A1D2E1 /* Weather.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Weather.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		41AAD2E52BAB61B300A1D2E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		41AAD2E92BAB61B300A1D2E1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -37,6 +51,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		413A78312BAF7F8600468BA2 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				413A78322BAF7F9B00468BA2 /* NetworkClient.swift */,
+				413A78372BAF81C200468BA2 /* WeatherInfoService.swift */,
+				413A78412BB0064200468BA2 /* WeatherStorage.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		413A783A2BAF828C00468BA2 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				413A783B2BAF82A800468BA2 /* CurrentWeatherModel.swift */,
+				413A783D2BAF82B800468BA2 /* ShortWeatherModel.swift */,
+				413A783F2BAF83E900468BA2 /* WeatherResult.swift */,
+				413A78432BB01FA800468BA2 /* WeatherCodeModel.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
 		41AAD2D92BAB61B300A1D2E1 = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +91,8 @@
 		41AAD2E42BAB61B300A1D2E1 /* Weather */ = {
 			isa = PBXGroup;
 			children = (
+				413A783A2BAF828C00468BA2 /* Models */,
+				413A78312BAF7F8600468BA2 /* Services */,
 				41AAD2E52BAB61B300A1D2E1 /* AppDelegate.swift */,
 				41AAD2E92BAB61B300A1D2E1 /* ViewController.swift */,
 				41AAD2EE2BAB61B700A1D2E1 /* Assets.xcassets */,
@@ -77,6 +114,7 @@
 				41AAD2DE2BAB61B300A1D2E1 /* Sources */,
 				41AAD2DF2BAB61B300A1D2E1 /* Frameworks */,
 				41AAD2E02BAB61B300A1D2E1 /* Resources */,
+				413A78452BB04CD500468BA2 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -132,15 +170,43 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		413A78452BB04CD500468BA2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"/opt/homebrew/bin:$PATH\"\n\nif which swiftlint > /dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		41AAD2DE2BAB61B300A1D2E1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				413A783E2BAF82B800468BA2 /* ShortWeatherModel.swift in Sources */,
+				413A783C2BAF82A800468BA2 /* CurrentWeatherModel.swift in Sources */,
 				41AAD2EA2BAB61B300A1D2E1 /* ViewController.swift in Sources */,
+				413A78382BAF81C200468BA2 /* WeatherInfoService.swift in Sources */,
+				413A78332BAF7F9B00468BA2 /* NetworkClient.swift in Sources */,
+				413A78402BAF83E900468BA2 /* WeatherResult.swift in Sources */,
 				41AAD2E62BAB61B300A1D2E1 /* AppDelegate.swift in Sources */,
 				413A782E2BAF001700468BA2 /* CurrentWeatherCell.swift in Sources */,
 				413A78302BAF030B00468BA2 /* ShortWeatherCell.swift in Sources */,
+				413A78422BB0064200468BA2 /* WeatherStorage.swift in Sources */,
+				413A78442BB01FA800468BA2 /* WeatherCodeModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -195,7 +261,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -258,7 +324,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;

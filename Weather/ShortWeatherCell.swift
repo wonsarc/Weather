@@ -15,8 +15,7 @@ final class ShortWeatherCell: UICollectionViewCell {
         let date = UILabel()
         date.translatesAutoresizingMaskIntoConstraints = false
         date.textColor = .white
-        date.textAlignment = .left
-        date.text = "Воскресенье"
+        date.textAlignment = .center
         date.font = UIFont.boldSystemFont(ofSize: 12)
         return date
     }()
@@ -24,7 +23,7 @@ final class ShortWeatherCell: UICollectionViewCell {
     lazy var weatherImageView: UIImageView = {
         let weatherImageView = UIImageView()
         weatherImageView.translatesAutoresizingMaskIntoConstraints = false
-        weatherImageView.image = UIImage(named: "Cloudy")
+        weatherImageView.tintColor = .white
         return weatherImageView
     }()
 
@@ -33,7 +32,6 @@ final class ShortWeatherCell: UICollectionViewCell {
         minTemp.translatesAutoresizingMaskIntoConstraints = false
         minTemp.textColor = .white
         minTemp.textAlignment = .center
-        minTemp.text = "-1°"
         minTemp.font = UIFont.boldSystemFont(ofSize: 24)
         return minTemp
     }()
@@ -43,7 +41,6 @@ final class ShortWeatherCell: UICollectionViewCell {
         maxTemp.translatesAutoresizingMaskIntoConstraints = false
         maxTemp.textColor = .white
         maxTemp.textAlignment = .center
-        maxTemp.text = "10°"
         maxTemp.font = UIFont.boldSystemFont(ofSize: 24)
         return maxTemp
     }()
@@ -51,9 +48,10 @@ final class ShortWeatherCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = 25
-        backgroundColor = UIColor(red: 153/255.0, green: 184/255.0, blue: 204/255.0, alpha: 0.95)
+        backgroundColor = .accentSecondary.withAlphaComponent(0.7)
 
         setupViews()
+        setupConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -65,15 +63,17 @@ final class ShortWeatherCell: UICollectionViewCell {
         addSubview(weatherImageView)
         addSubview(maxTemperatureLabel)
         addSubview(minTemperatureLabel)
+    }
 
-
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
+
             date.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             date.centerYAnchor.constraint(equalTo: centerYAnchor),
 
-            weatherImageView.heightAnchor.constraint(equalToConstant: 33),
-            weatherImageView.widthAnchor.constraint(equalToConstant: 40),
-            weatherImageView.leadingAnchor.constraint(equalTo: date.trailingAnchor, constant: 35),
+            weatherImageView.heightAnchor.constraint(equalToConstant: 30),
+            weatherImageView.widthAnchor.constraint(equalToConstant: 30),
+            weatherImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             weatherImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
 
             maxTemperatureLabel.trailingAnchor.constraint(equalTo: minTemperatureLabel.leadingAnchor, constant: -15),
@@ -83,5 +83,11 @@ final class ShortWeatherCell: UICollectionViewCell {
             minTemperatureLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
     }
-}
 
+    func configure(with shortWeather: ShortWeatherModel) {
+        date.text = shortWeather.day
+        weatherImageView.image = UIImage(named: shortWeather.iconWeather ?? "")?.withRenderingMode(.alwaysTemplate)
+        maxTemperatureLabel.text = "\(shortWeather.maxTemp ?? "-") °"
+        minTemperatureLabel.text = "\(shortWeather.minTemp ?? "-") °"
+    }
+}
