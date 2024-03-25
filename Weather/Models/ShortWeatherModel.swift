@@ -8,6 +8,7 @@
 import Foundation
 
 struct ShortWeatherModel: Codable {
+
     let day: String?
     let iconWeather: String?
     let minTemp: String?

@@ -9,19 +9,23 @@ import UIKit
 import CoreLocation
 
 protocol CurrentWeatherCellDelegate: AnyObject {
+
     func didTapSearchButton(in cell: CurrentWeatherCell)
-//    func didTapLocationButton(in cell: CurrentWeatherCell)
 }
 
 final class CurrentWeatherCell: UICollectionViewCell {
 
+    // MARK: - Public Properties
+
     static let reuseIdent = "CurrentWeatherCell"
     weak var delegate: CurrentWeatherCellDelegate?
 
-    var mainColor: UIColor = .accent
-    var secondColor: UIColor = .accentSecondary
+    // MARK: - Private Properties
 
-    lazy var todayLabel: UILabel = {
+    private var mainColor: UIColor = .accent
+    private var secondColor: UIColor = .accentSecondary
+
+    lazy private var todayLabel: UILabel = {
         let todayLabel = UILabel()
         todayLabel.translatesAutoresizingMaskIntoConstraints = false
         todayLabel.textColor = mainColor
@@ -31,14 +35,14 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return todayLabel
     }()
 
-    lazy var weatherImageView: UIImageView = {
+    lazy private var weatherImageView: UIImageView = {
         let weatherImageView = UIImageView()
         weatherImageView.translatesAutoresizingMaskIntoConstraints = false
         weatherImageView.tintColor = mainColor
         return weatherImageView
     }()
 
-    lazy var temperatureLabel: UILabel = {
+    lazy private var temperatureLabel: UILabel = {
         let temperatureLabel = UILabel()
         temperatureLabel.translatesAutoresizingMaskIntoConstraints = false
         temperatureLabel.textColor = mainColor
@@ -47,7 +51,7 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return temperatureLabel
     }()
 
-    lazy var descriptionCurrentWeatherLabel: UILabel = {
+    lazy private var descriptionCurrentWeatherLabel: UILabel = {
         let descriptionCurrentWeatherLabel = UILabel()
         descriptionCurrentWeatherLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionCurrentWeatherLabel.textColor = mainColor
@@ -56,7 +60,7 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return descriptionCurrentWeatherLabel
     }()
 
-    lazy var locationLabel: UILabel = {
+    lazy private var locationLabel: UILabel = {
         let locationLabel = UILabel()
         locationLabel.translatesAutoresizingMaskIntoConstraints = false
         locationLabel.textColor = mainColor
@@ -64,7 +68,7 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return locationLabel
     }()
 
-    lazy var windSpeedLabel: UILabel = {
+    lazy private var windSpeedLabel: UILabel = {
         let windSpeedLabel = UILabel()
         windSpeedLabel.translatesAutoresizingMaskIntoConstraints = false
         windSpeedLabel.textColor = mainColor
@@ -73,7 +77,7 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return windSpeedLabel
     }()
 
-    lazy var rectangleLabel: UILabel = {
+    lazy private var rectangleLabel: UILabel = {
         let rectangleImageView = UILabel()
         rectangleImageView.translatesAutoresizingMaskIntoConstraints = false
         rectangleImageView.textColor = mainColor
@@ -83,7 +87,7 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return rectangleImageView
     }()
 
-    lazy var feelsLikeLabel: UILabel = {
+    lazy private var feelsLikeLabel: UILabel = {
         let feelsLikeLabel = UILabel()
         feelsLikeLabel.translatesAutoresizingMaskIntoConstraints = false
         feelsLikeLabel.textColor = mainColor
@@ -92,7 +96,7 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return feelsLikeLabel
     }()
 
-    lazy var searchButton: UIButton = {
+    lazy private var searchButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
         let image = UIImage(systemName: "magnifyingglass")?.withRenderingMode(.alwaysTemplate)
@@ -102,23 +106,15 @@ final class CurrentWeatherCell: UICollectionViewCell {
         return button
     }()
 
-//    lazy var getLocationButton: UIButton = {
-//        let button = UIButton(type: .custom)
-//        button.translatesAutoresizingMaskIntoConstraints = false
-//        let image = UIImage(systemName: "location")?.withRenderingMode(.alwaysTemplate)
-//        button.setImage(image, for: .normal)
-//        button.tintColor = mainColor
-//        button.addTarget(self, action: #selector(getLocationButtonTapped), for: .touchUpInside)
-//        return button
-//    }()
-
-    lazy var windImageView: UIImageView = {
+    lazy private var windImageView: UIImageView = {
         let windImageView = UIImageView()
         windImageView.translatesAutoresizingMaskIntoConstraints = false
         windImageView.image = UIImage(named: "windIcon")?.withRenderingMode(.alwaysTemplate)
         windImageView.backgroundColor = secondColor
         return windImageView
     }()
+
+    // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -133,6 +129,41 @@ final class CurrentWeatherCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Public Methods
+
+    func configure(with currentWeather: CurrentWeatherModel) {
+        getCity { city in
+            if let city = city {
+                self.locationLabel.text = city
+            } else {
+                self.locationLabel.text = "unknown"
+            }
+        }
+        weatherImageView.image = UIImage(named: currentWeather.iconWeather ?? "")?.withRenderingMode(.alwaysTemplate)
+        temperatureLabel.text = "\(currentWeather.currentTemp ?? "-") °"
+        descriptionCurrentWeatherLabel.text = currentWeather.descriptionWeather
+        feelsLikeLabel.text = "Ощущается:   \(currentWeather.feelsLikeTemp ?? "-") °"
+        windSpeedLabel.text = currentWeather.windSpeedLabel
+    }
+
+    // MARK: - Private Methods
+
+    private func getCity(completion: @escaping (String?) -> Void) {
+        guard let latitude = WeatherStorage.cached.userLatitude,
+              let longitude = WeatherStorage.cached.userLongitude else {
+            completion(nil)
+            return
+        }
+
+        LocationService().cityFromCoordinates(latitude: latitude, longitude: longitude) { city in
+            completion(city)
+        }
+    }
+
+     @objc private func searchButtonTapped() {
+        delegate?.didTapSearchButton(in: self)
+    }
+
     private func setupViews() {
         addSubview(todayLabel)
         addSubview(weatherImageView)
@@ -144,7 +175,6 @@ final class CurrentWeatherCell: UICollectionViewCell {
         addSubview(windSpeedLabel)
         addSubview(windImageView)
         addSubview(searchButton)
-//        addSubview(getLocationButton)
     }
 
     private func setupConstraints() {
@@ -185,39 +215,4 @@ final class CurrentWeatherCell: UICollectionViewCell {
             searchButton.topAnchor.constraint(equalTo: descriptionCurrentWeatherLabel.bottomAnchor, constant: 20)
         ])
     }
-
-    func configure(with currentWeather: CurrentWeatherModel) {
-        getCity { city in
-            if let city = city {
-                self.locationLabel.text = city
-            } else {
-                self.locationLabel.text = "unknown"
-            }
-        }
-        weatherImageView.image = UIImage(named: currentWeather.iconWeather ?? "")?.withRenderingMode(.alwaysTemplate)
-        temperatureLabel.text = "\(currentWeather.currentTemp ?? "-") °"
-        descriptionCurrentWeatherLabel.text = currentWeather.descriptionWeather
-        feelsLikeLabel.text = "Ощущается:   \(currentWeather.feelsLikeTemp ?? "-") °"
-        windSpeedLabel.text = currentWeather.windSpeedLabel
-    }
-
-    private func getCity(completion: @escaping (String?) -> Void) {
-        guard let latitude = WeatherStorage.cached.userLatitude,
-              let longitude = WeatherStorage.cached.userLongitude else {
-            completion(nil)
-            return
-        }
-
-        LocationService().cityFromCoordinates(latitude: latitude, longitude: longitude) { city in
-            completion(city)
-        }
-    }
-
-    @objc func searchButtonTapped() {
-        delegate?.didTapSearchButton(in: self)
-    }
-//
-//    @objc func getLocationButtonTapped() {
-//        delegate?.didTapLocationButton(in: self)
-//    }
 }

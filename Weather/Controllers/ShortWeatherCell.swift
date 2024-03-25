@@ -9,9 +9,13 @@ import UIKit
 
 final class ShortWeatherCell: UICollectionViewCell {
 
+    // MARK: - Public Properties
+
     static let reuseIdent = "ShortWeatherCell"
 
-    lazy var date: UILabel = {
+    // MARK: - Private Properties
+
+    lazy private var date: UILabel = {
         let date = UILabel()
         date.translatesAutoresizingMaskIntoConstraints = false
         date.textColor = .white
@@ -20,14 +24,14 @@ final class ShortWeatherCell: UICollectionViewCell {
         return date
     }()
 
-    lazy var weatherImageView: UIImageView = {
+    lazy private var weatherImageView: UIImageView = {
         let weatherImageView = UIImageView()
         weatherImageView.translatesAutoresizingMaskIntoConstraints = false
         weatherImageView.tintColor = .white
         return weatherImageView
     }()
 
-    lazy var minTemperatureLabel: UILabel = {
+    lazy private var minTemperatureLabel: UILabel = {
         let minTemp = UILabel()
         minTemp.translatesAutoresizingMaskIntoConstraints = false
         minTemp.textColor = .white
@@ -37,7 +41,7 @@ final class ShortWeatherCell: UICollectionViewCell {
         return minTemp
     }()
 
-    lazy var maxTemperatureLabel: UILabel = {
+    lazy private var maxTemperatureLabel: UILabel = {
         let maxTemp = UILabel()
         maxTemp.translatesAutoresizingMaskIntoConstraints = false
         maxTemp.textColor = .white
@@ -45,6 +49,8 @@ final class ShortWeatherCell: UICollectionViewCell {
         maxTemp.font = UIFont.boldSystemFont(ofSize: 24)
         return maxTemp
     }()
+
+    // MARK: - Initializers
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -58,6 +64,17 @@ final class ShortWeatherCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Public Methods
+
+    func configure(with shortWeather: ShortWeatherModel) {
+        date.text = shortWeather.day
+        weatherImageView.image = UIImage(named: shortWeather.iconWeather ?? "")?.withRenderingMode(.alwaysTemplate)
+        maxTemperatureLabel.text = "\(shortWeather.maxTemp ?? "-") °"
+        minTemperatureLabel.text = "\(shortWeather.minTemp ?? "-") °"
+    }
+
+    // MARK: - Private Methods
 
     private func setupViews() {
         addSubview(date)
@@ -83,12 +100,5 @@ final class ShortWeatherCell: UICollectionViewCell {
             minTemperatureLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
             minTemperatureLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-    }
-
-    func configure(with shortWeather: ShortWeatherModel) {
-        date.text = shortWeather.day
-        weatherImageView.image = UIImage(named: shortWeather.iconWeather ?? "")?.withRenderingMode(.alwaysTemplate)
-        maxTemperatureLabel.text = "\(shortWeather.maxTemp ?? "-") °"
-        minTemperatureLabel.text = "\(shortWeather.minTemp ?? "-") °"
     }
 }

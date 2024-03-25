@@ -44,5 +44,4 @@ final class LocationService {
             completion(firstItem.placemark.coordinate)
         }
     }
-
 }

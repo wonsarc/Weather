@@ -8,6 +8,7 @@
 import Foundation
 
 struct CurrentWeatherModel: Codable {
+
     let currentTemp: String?
     let iconWeather: String?
     let descriptionWeather: String?

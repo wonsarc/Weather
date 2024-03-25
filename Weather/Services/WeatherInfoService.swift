@@ -8,10 +8,7 @@
 import Foundation
 
 protocol WeatherInfoServiceProtocol {
-    //    var photos: [Photo] { get }
-    //
-    //    func fetchPhotosNextPage()
-    //    func changeLike(photoId: String, isLike: Bool, _ completion: @escaping (Result<Void, Error>) -> Void)
+    func fetchWeatherInfo()
 }
 
 final class WeatherInfoService: WeatherInfoServiceProtocol {
@@ -50,11 +47,6 @@ final class WeatherInfoService: WeatherInfoServiceProtocol {
     func fetchWeatherInfo() {
         assert(Thread.isMainThread)
         if task != nil {
-            //            if lastLoadedPage == photos.count / perPage {
-            //                task?.cancel()
-            //            } else {
-            //                return
-            //            }
             return
         }
 

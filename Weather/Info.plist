@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Lol Kek</string>
+	<string>Ваша геопозиция используется для показа местной погоды.</string>
 </dict>
 </plist>

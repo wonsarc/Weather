@@ -52,47 +52,33 @@ enum WeatherCodeModel: Int {
         case .fog:
             return "Туман"
         case .drizzleLight:
-            return "Морось: легкая интенсивность"
+            return "Морось: слабая"
         case .drizzleModerate:
-            return "Морось: умеренная интенсивность"
+            return "Морось: умеренная"
         case .drizzleDense:
-            return "Морось: высокая интенсивность"
-        case .freezingDrizzleLight:
-            return "Замерзающая морось: легкая интенсивность"
-        case .freezingDrizzleDense:
-            return "Замерзающая морось: высокая интенсивность"
-        case .rainSlight:
-            return "Дождь: слабая интенсивность"
-        case .rainModerate:
-            return "Дождь: умеренная интенсивность"
-        case .rainHeavy:
-            return "Дождь: сильная интенсивность"
-        case .freezingRainLight:
-            return "Ледяной дождь: легкая интенсивность"
-        case .freezingRainHeavy:
-            return "Ледяной дождь: высокая интенсивность"
-        case .snowFallSlight:
-            return "Снегопад: слабая интенсивность"
+            return "Морось: сильная"
+        case .rainSlight, .rainShowersSlight:
+            return "Дождь: слабый"
+        case .rainModerate, .rainShowersModerate:
+            return "Дождь: умеренный"
+        case .rainHeavy, .rainShowersViolent:
+            return "Дождь: сильный"
+        case .freezingRainLight, .freezingDrizzleLight:
+            return "Ледяной дождь: слабый"
+        case .freezingRainHeavy, .freezingDrizzleDense:
+            return "Ледяной дождь: сильный"
+        case .snowFallSlight, .snowShowersSlight:
+            return "Снегопад: слабый"
         case .snowFallModerate:
-            return "Снегопад: умеренная интенсивность"
-        case .snowFallHeavy:
-            return "Снегопад: сильная интенсивность"
+            return "Снегопад: умеренный"
+        case .snowFallHeavy, .snowShowersHeavy:
+            return "Снегопад: сильный"
         case .snowGrains:
             return "Снежные зерна"
-        case .rainShowersSlight:
-            return "Дождь с прояснениями: слабая интенсивность"
-        case .rainShowersModerate:
-            return "Дождь с прояснениями: умеренная интенсивность"
-        case .rainShowersViolent:
-            return "Дождь с прояснениями: сильная интенсивность"
-        case .snowShowersSlight:
-            return "Снег с прояснениями: слабая интенсивность"
-        case .snowShowersHeavy:
-            return "Снег с прояснениями: сильная интенсивность"
         case .thunderstormSlight:
-            return "Гроза: слабая интенсивность"
+            return "Гроза: слабая"
         case .thunderstormModerate:
-            return "Гроза: умеренная интенсивность"
+            return "Гроза: умеренная"
         case .thunderstormHail:
             return "Гроза с градом"
         case .unknown:
